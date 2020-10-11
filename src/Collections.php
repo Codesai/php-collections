@@ -24,8 +24,13 @@ final class Collections
         return new Collections(array_map($lambda, $this->array, array_keys($this->array)));
     }
 
+    public function filter(\Closure $lambda)
+    {
+        return new Collections(array_filter($this->array, $lambda));
+    }
+
     public function toArray() : array
     {
-        return $this->array;
+        return array_values($this->array);
     }
 }
