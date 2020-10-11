@@ -19,9 +19,7 @@ final class CollectionsTest extends TestCase
     {
         $givenCollection = Collections::stream([1, 2, 3, 4, 5, 6]);
 
-        $result = $givenCollection->filter(function(int $value) {
-            return $value % 2 == 0;
-        })->toList();
+        $result = $givenCollection->filter(fn(int $value)  => $value % 2 == 0)->toList();
 
         self::assertEquals([0 => 2, 1 => 4, 2 => 6], $result);
     }
@@ -31,9 +29,7 @@ final class CollectionsTest extends TestCase
     {
         $givenCollection = Collections::stream(['parrot' => 1, 'cockatoo' => 2, 'african_grey' => 3]);
 
-        $result = $givenCollection->filter(function(int $value) {
-            return $value % 2 == 0;
-        })->toDictionary();
+        $result = $givenCollection->filter(fn(int $value) => $value % 2 == 0)->toDictionary();
 
         self::assertEquals(['cockatoo' => 2], $result);
     }
@@ -43,9 +39,7 @@ final class CollectionsTest extends TestCase
     {
         $givenCollection = Collections::stream([1, 2, 3, 4]);
 
-        $result = $givenCollection->map(function(int $number) {
-            return $number + 2;
-        })->toList();
+        $result = $givenCollection->map(fn(int $number) => $number + 2)->toList();
 
         self::assertEquals([0 => 3, 1 => 4, 2 => 5, 3 => 6], $result);
     }
@@ -57,9 +51,7 @@ final class CollectionsTest extends TestCase
     {
         $givenCollection = Collections::stream([1, 2, 3, 4]);
 
-        $result = $givenCollection->map(function(int $value, int $index) {
-            return $value + $index;
-        });
+        $result = $givenCollection->map(fn(int $value, int $index) => $value + $index);
 
         self::assertEquals(Collections::stream([1, 3, 5, 7]), $result);
     }

@@ -43,9 +43,7 @@ final class Collections
     /** @return string[] */
     public function mapKeysAndValues(): array
     {
-        return array_map(function ($value, $index) {
-            return "$index => $value";
-        }, $this->array, array_keys($this->array));
+        return array_map(fn($value, $index) => "$index => $value", $this->array, array_keys($this->array));
     }
 
     public function toDictionary()
