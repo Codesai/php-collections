@@ -29,8 +29,27 @@ final class Collections
         return new Collections(array_filter($this->array, $lambda));
     }
 
-    public function toArray() : array
+    public function toList() : array
     {
         return array_values($this->array);
+    }
+
+    public function __toString()
+    {
+        $splitKeysAndValues = implode(", ", $this->mapKeysAndValues());
+        return "[$splitKeysAndValues]";
+    }
+
+    /** @return string[] */
+    public function mapKeysAndValues(): array
+    {
+        return array_map(function ($value, $index) {
+            return "$index => $value";
+        }, $this->array, array_keys($this->array));
+    }
+
+    public function toDictionary()
+    {
+        return $this->array;
     }
 }
