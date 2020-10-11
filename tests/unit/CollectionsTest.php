@@ -44,8 +44,6 @@ final class CollectionsTest extends TestCase
         self::assertEquals([0 => 3, 1 => 4, 2 => 5, 3 => 6], $result);
     }
 
-
-
     /** @test */
     public function applies_a_lambda_to_the_array_collection_with_many_values_using_the_value_position_in_the_array()
     {

@@ -34,20 +34,15 @@ final class Collections
         return array_values($this->array);
     }
 
-    public function __toString()
-    {
-        $splitKeysAndValues = implode(", ", $this->mapKeysAndValues());
-        return "[$splitKeysAndValues]";
-    }
-
-    /** @return string[] */
-    public function mapKeysAndValues(): array
-    {
-        return array_map(fn($value, $index) => "$index => $value", $this->array, array_keys($this->array));
-    }
-
     public function toDictionary()
     {
         return $this->array;
+    }
+
+    public function __toString()
+    {
+        $parseToKeyAndValue = fn($value, $index) => "$index => $value";
+        $splitKeysAndValues = implode(", ", array_map($parseToKeyAndValue, $this->array, array_keys($this->array)));
+        return "[$splitKeysAndValues]";
     }
 }
