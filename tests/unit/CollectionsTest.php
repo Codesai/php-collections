@@ -9,18 +9,6 @@ final class CollectionsTest extends TestCase
 {
 
     /** @test */
-    public function applies_a_lambda_to_the_array_collection_with_a_single_value()
-    {
-        $givenCollection = Collections::stream([1]);
-
-        $result = $givenCollection->map(function(int $number) {
-            return $number + 2;
-        })->toArray();
-
-        self::assertEquals([0 => 3], $result);
-    }
-
-    /** @test */
     public function applies_a_lambda_to_the_array_collection_with_many_values()
     {
         $givenCollection = Collections::stream([1, 2, 3, 4]);
@@ -30,6 +18,18 @@ final class CollectionsTest extends TestCase
         })->toArray();
 
         self::assertEquals([0 => 3, 1 => 4, 2 => 5, 3 => 6], $result);
+    }
+
+    /** @test */
+    public function applies_a_lambda_to_the_array_collection_with_many_values_using_the_value_position_in_the_array()
+    {
+        $givenCollection = Collections::stream([1, 2, 3, 4]);
+
+        $result = $givenCollection->map(function(int $value, int $index) {
+            return $value + $index;
+        })->toArray();
+
+        self::assertEquals([0 => 1, 1 => 3, 2 => 5, 3 => 7], $result);
     }
 
 }

@@ -20,7 +20,8 @@ final class Collections
 
     public function map(\Closure $lambda) : Collections
     {
-        return new Collections(array_map($lambda, $this->array));
+
+        return new Collections(array_map($lambda, $this->array, array_keys($this->array)));
     }
 
     public function toArray() : array
