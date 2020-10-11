@@ -1,0 +1,8 @@
+vendor/
+.git/
+.idea/
+Dockerfile
+docker-compose.yml
+.dockerignore
+.gitignore
+Makefile

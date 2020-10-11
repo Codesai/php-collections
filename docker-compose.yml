@@ -1,0 +1,10 @@
+version: '3.7'
+
+services:
+  php:
+    build:
+      context: .
+    volumes:
+    - ./src/:/app/src:cached
+    - ./tests/:/app/tests:cached
+    - ./composer.json:/app/composer.json:cached

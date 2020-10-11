@@ -1,0 +1,27 @@
+{
+    "name": "codesai/collections",
+    "description": "A straight forward library to handle collections in PHP stream way",
+    "type": "library",
+    "scripts": {
+        "tests": "phpunit tests"
+    },
+    "require-dev": {
+        "phpunit/phpunit": "9.4.*"
+    },
+    "authors": [
+        {
+            "name": "Miguel Ángel Viera",
+            "email": "mangelviera93@gmail.com"
+        }
+    ],
+    "autoload": {
+        "psr-4": {
+            "Codesai\\Collections\\": "src"
+        }
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "tests\\": "tests"
+        }
+    }
+}
