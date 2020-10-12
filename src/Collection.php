@@ -6,7 +6,7 @@ namespace Codesai\Collections;
 
 use Codesai\Collections\exceptions\InfiniteCollectionValuesNotBounded;
 
-final class Collections
+final class Collection
 {
     private array $array;
     /**
@@ -16,9 +16,9 @@ final class Collections
 
     /**
      * @param array|callable $param
-     * @return Collections
+     * @return Collection
      */
-    public static function stream($param): Collections
+    public static function from($param): Collection
     {
         if ($param instanceof \Closure) return static::infiniteCollection($param);
         return static::arrayCollection($param);
@@ -26,24 +26,24 @@ final class Collections
 
     private static function arrayCollection(array $array)
     {
-        $collections = new Collections();
+        $collections = new Collection();
         $collections->array = $array;
         return $collections;
     }
 
     private static function infiniteCollection(callable $lambda)
     {
-        $collections = new Collections();
+        $collections = new Collection();
         $collections->generator = fn(int $value, int $index) => $lambda($index);
         return $collections;
     }
 
     /**
      * @param callable $lambda
-     * @return Collections
+     * @return Collection
      * @throws InfiniteCollectionValuesNotBounded
      */
-    public function map(callable $lambda) : Collections
+    public function map(callable $lambda) : Collection
     {
         $this->validateInfiniteStream();
         return static::arrayCollection(array_map($lambda, $this->array, array_keys($this->array)));
@@ -51,7 +51,7 @@ final class Collections
 
     /**
      * @param callable $lambda
-     * @return Collections
+     * @return Collection
      * @throws InfiniteCollectionValuesNotBounded
      */
     public function filter(callable $lambda)
