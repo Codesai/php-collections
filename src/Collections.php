@@ -38,14 +38,25 @@ final class Collections
         return $collections;
     }
 
+    /**
+     * @param callable $lambda
+     * @return Collections
+     * @throws InfiniteCollectionValuesNotBounded
+     */
     public function map(callable $lambda) : Collections
     {
-        if ($this->generator) throw new InfiniteCollectionValuesNotBounded();
+        $this->validateInfiniteStream();
         return static::arrayCollection(array_map($lambda, $this->array, array_keys($this->array)));
     }
 
+    /**
+     * @param callable $lambda
+     * @return Collections
+     * @throws InfiniteCollectionValuesNotBounded
+     */
     public function filter(callable $lambda)
     {
+        $this->validateInfiniteStream();
         return static::arrayCollection(array_filter($this->array, $lambda));
     }
 
@@ -70,5 +81,13 @@ final class Collections
     {
         $array = array_fill(0, $size, 0);
         return static::arrayCollection($array)->map($this->generator);
+    }
+
+    /**
+     * @throws InfiniteCollectionValuesNotBounded
+     */
+    private function validateInfiniteStream(): void
+    {
+        if ($this->generator) throw new InfiniteCollectionValuesNotBounded();
     }
 }
