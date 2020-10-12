@@ -18,13 +18,13 @@ final class Collections
         $this->array = $array;
     }
 
-    public function map(\Closure $lambda) : Collections
+    public function map(callable $lambda) : Collections
     {
 
         return new Collections(array_map($lambda, $this->array, array_keys($this->array)));
     }
 
-    public function filter(\Closure $lambda)
+    public function filter(callable $lambda)
     {
         return new Collections(array_filter($this->array, $lambda));
     }
@@ -41,8 +41,8 @@ final class Collections
 
     public function __toString()
     {
-        $parseToKeyAndValue = fn($value, $index) => "$index => $value";
-        $splitKeysAndValues = implode(", ", array_map($parseToKeyAndValue, $this->array, array_keys($this->array)));
-        return "[$splitKeysAndValues]";
+        $parseToKeyAndValue = fn($value, $index) => "\t$index => $value";
+        $splitKeysAndValues = implode(",\n", array_map($parseToKeyAndValue, $this->array, array_keys($this->array)));
+        return "[\n$splitKeysAndValues\n]";
     }
 }

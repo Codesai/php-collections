@@ -11,7 +11,7 @@ final class CollectionsTest extends TestCase
     /** @test */
     public function prints_a_collection()
     {
-        self::assertEquals("[0 => 1, 1 => 2, 2 => 3]", strval(Collections::stream([1, 2, 3])));
+        self::assertEquals("[\n\t0 => 1,\n\t1 => 2,\n\t2 => 3\n]", strval(Collections::stream([1, 2, 3])));
     }
 
     /** @test */
