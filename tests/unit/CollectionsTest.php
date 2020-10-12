@@ -8,6 +8,22 @@ use PHPUnit\Framework\TestCase;
 
 final class CollectionsTest extends TestCase
 {
+    /**
+     * TODO:
+     *  - Flatten
+     *  - flatMap
+     *  - next
+     *  - reduce
+     *  - all
+     *  - any
+     *  - forEach
+     *  - first
+     *  - group_by
+     *  - reverse
+     *  - sort
+     *  - filter_null
+     *  - get
+     */
 
     /** @test */
     public function prints_a_collection()
