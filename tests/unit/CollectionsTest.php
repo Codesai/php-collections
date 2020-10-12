@@ -3,6 +3,7 @@
 namespace tests\unit;
 
 use Codesai\Collections\Collections;
+use Codesai\Collections\exceptions\InfiniteCollectionValuesNotBounded;
 use PHPUnit\Framework\TestCase;
 
 final class CollectionsTest extends TestCase
@@ -52,6 +53,27 @@ final class CollectionsTest extends TestCase
         $result = $givenCollection->map(fn(int $value, int $index) => $value + $index);
 
         self::assertEquals(Collections::stream([1, 3, 5, 7]), $result);
+    }
+
+    /** @test */
+    public function create_an_infinite_collection_generated_from_a_lambda()
+    {
+        $givenCollection = Collections::stream(fn(int $index) => $index);
+
+        $result = $givenCollection
+            ->take(3)
+            ->map(fn(int $value, int $index) => $value + 2);
+
+        self::assertEquals(Collections::stream([2, 3, 4]), $result);
+    }
+
+    /** @test */
+    public function when_infinite_collection_values_are_not_bounded_an_exception_raises()
+    {
+        $this->expectException(InfiniteCollectionValuesNotBounded::class);
+
+        Collections::stream(fn(int $index) => $index)
+            ->map(fn(int $value, int $index) => $value + 2);
     }
 
 }
