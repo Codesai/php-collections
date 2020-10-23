@@ -25,9 +25,14 @@ final class Collection
     /**
      * @param mixed $key
      * @return mixed
+     * @throws InfiniteCollectionValuesNotBounded
      */
     public function __invoke($key)
     {
+        if ($this->generator) {
+            if (gettype($key) != 'integer') throw new \InvalidArgumentException('Key argument should be a integer index');
+            return $this->take($key + 1)($key);
+        }
         return $this->array[$key];
     }
 

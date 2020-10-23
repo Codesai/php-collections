@@ -35,11 +35,48 @@ class InfiniteCollectionTest extends TestCase
         $infiniteCollectionLambda();
     }
 
+    /** @test
+     * @throws InfiniteCollectionValuesNotBounded
+     */
+    public function retrieves_a_value_from_it_using_the_invoke_magic_method()
+    {
+        $collection = Collection::from(fn($index) => $index + 1);
+
+        $this->assertEquals(1, $collection(0));
+        $this->assertEquals(101, $collection(100));
+    }
+
+    /** @test
+     * @dataProvider invalidInfiniteCollectionKeys
+     * @param $invalidKey
+     * @throws InfiniteCollectionValuesNotBounded
+     */
+    public function cannot_retrieve_a_value_when_the_key_is_not_a_number($invalidKey)
+    {
+        $this->expectException('InvalidArgumentException');
+
+        $collection = Collection::from(fn($index) => $index + 1);
+
+        $collection($invalidKey);
+    }
+
     public function infiniteCollectionsNotBounded()
     {
         return [
             [fn() => Collection::from(fn(int $index) => $index)->map(fn(int $value, int $index) => $value + 2)],
             [fn() => Collection::from(fn(int $index) => $index)->filter(fn(int $value, int $index) => $index % 2 == 0)]
+        ];
+    }
+
+    public function invalidInfiniteCollectionKeys()
+    {
+        return [
+            ['invalid'],
+            [true],
+            [[]],
+            [10.5],
+            [null],
+            [new class {}]
         ];
     }
 }
