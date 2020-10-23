@@ -17,6 +17,7 @@ final class CollectionTest extends TestCase
      *  - any
      *  - forEach
      *  - first
+     *  - last
      *  - group_by
      *  - reverse
      *  - sort
