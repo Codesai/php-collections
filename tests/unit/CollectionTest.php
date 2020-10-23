@@ -21,7 +21,6 @@ final class CollectionTest extends TestCase
      *  - reverse
      *  - sort
      *  - filter_null
-     *  - get
      */
 
     /** @test */
