@@ -61,6 +61,19 @@ final class CollectionTest extends TestCase
         $this->assertEquals(Collection::from([100, 'a', true, 'b']), $collection);
     }
 
+
+    /** @test */
+    public function set_a_value_using_a_method_that_creates_a_new_collection_instead_of_mutating_the_existing_one()
+    {
+        $collection = Collection::from([100, 'a', true]);
+
+        $result = $collection->set(1, 'b');
+
+        $this->assertNotEquals($collection, $result);
+        $this->assertEquals('a', $collection[1]);
+        $this->assertEquals('b', $result[1]);
+    }
+
     /** @test */
     public function can_foreach_a_collection_like_a_php_array()
     {

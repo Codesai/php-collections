@@ -36,7 +36,6 @@ class InfiniteCollectionTest extends TestCase
     }
 
     /** @test
-     * @throws InfiniteCollectionValuesNotBounded
      */
     public function retrieves_a_value_from_it_using_the_invoke_magic_method()
     {
@@ -49,7 +48,6 @@ class InfiniteCollectionTest extends TestCase
     /** @test
      * @dataProvider invalidInfiniteCollectionKeys
      * @param $invalidKey
-     * @throws InfiniteCollectionValuesNotBounded
      */
     public function cannot_retrieve_a_value_when_the_key_is_not_a_number($invalidKey)
     {

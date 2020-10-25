@@ -6,6 +6,7 @@ namespace Codesai\Collections;
 
 use ArrayAccess;
 use Codesai\Collections\exceptions\InfiniteCollectionValuesNotBounded;
+use InvalidArgumentException;
 
 final class Collection implements ArrayAccess, \Iterator
 {
@@ -106,6 +107,10 @@ final class Collection implements ArrayAccess, \Iterator
      */
     public function offsetGet($offset)
     {
+        if ($this->generator) {
+            if (!is_integer($offset)) throw new InvalidArgumentException();
+            return $this->take($offset + 1)[$offset];
+        }
         return $this->array[$offset];
     }
 
@@ -151,5 +156,17 @@ final class Collection implements ArrayAccess, \Iterator
     public function rewind()
     {
         $this->position = 0;
+    }
+
+    /**
+     * @param mixed $key
+     * @param mixed $value
+     * @return Collection
+     */
+    public function set($key, $value) : Collection
+    {
+        $clone = array_merge([], $this->array);
+        $clone[$key] = $value;
+        return Collection::from($clone);
     }
 }
