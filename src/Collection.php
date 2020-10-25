@@ -5,66 +5,35 @@ namespace Codesai\Collections;
 
 
 use ArrayAccess;
-use Codesai\Collections\exceptions\InfiniteCollectionValuesNotBounded;
-use InvalidArgumentException;
 
 final class Collection implements ArrayAccess, \Iterator
 {
     private array $array;
-    /** @var callable */
-    private $generator;
-    private $position = 0;
+    private int $position = 0;
 
-    /**
-     * @param array|callable $param
-     * @return Collection
-     */
-    public static function from($param): Collection
+    public static function from(array $array): Collection
     {
-        if (is_callable($param)) return static::infiniteCollection($param);
-        return static::arrayCollection($param);
+        return new Collection($array);
     }
 
-    private static function arrayCollection(array $array)
+    public function __construct(array $array)
     {
-        $collections = new Collection();
-        $collections->array = $array;
-        return $collections;
+        $this->array = $array;
     }
 
-    private static function infiniteCollection(callable $lambda)
-    {
-        $collections = new Collection();
-        $collections->generator = fn(int $value, int $index) => $lambda($index);
-        return $collections;
-    }
-
-    /**
-     * @param callable $lambda
-     * @return Collection
-     * @throws InfiniteCollectionValuesNotBounded
-     */
     public function map(callable $lambda) : Collection
     {
-        $this->validateInfiniteStream();
-        return static::arrayCollection(array_map($lambda, $this->array, array_keys($this->array)));
+        return static::from(array_map($lambda, $this->array, array_keys($this->array)));
     }
 
-    /**
-     * @param callable $lambda
-     * @return Collection
-     * @throws InfiniteCollectionValuesNotBounded
-     */
     public function filter(callable $lambda)
     {
-        $this->validateInfiniteStream();
-        return static::arrayCollection(array_filter($this->array, $lambda));
+        return static::from(array_filter($this->array, $lambda));
     }
 
     public function take(int $size)
     {
-        $array = array_fill(0, $size, 0);
-        return static::arrayCollection($array)->map($this->generator);
+        return static::from(array_chunk($this->array, $size));
     }
 
     public function toList() : array
@@ -85,14 +54,6 @@ final class Collection implements ArrayAccess, \Iterator
     }
 
     /**
-     * @throws InfiniteCollectionValuesNotBounded
-     */
-    private function validateInfiniteStream(): void
-    {
-        if ($this->generator) throw new InfiniteCollectionValuesNotBounded();
-    }
-
-    /**
      * @param mixed $offset
      * @return bool
      */
@@ -107,10 +68,6 @@ final class Collection implements ArrayAccess, \Iterator
      */
     public function offsetGet($offset)
     {
-        if ($this->generator) {
-            if (!is_integer($offset)) throw new InvalidArgumentException();
-            return $this->take($offset + 1)[$offset];
-        }
         return $this->array[$offset];
     }
 
