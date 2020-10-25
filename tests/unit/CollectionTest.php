@@ -42,16 +42,23 @@ final class CollectionTest extends TestCase
 
 
     /** @test */
-    public function set_a_value_on_the_collection_using_php_array_set_syntax_but_creating_a_new_collection_not_mutating_the_current_one()
+    public function set_a_value_on_the_collection_using_php_array_set_syntax()
     {
         $collection = Collection::from([100, 'a', true]);
 
-        $wtf = $collection[1] = 'b';
+        $collection[1] = 'b';
 
-        var_dump($wtf);
+        $this->assertEquals('b', $collection[1]);
+    }
 
-        $this->assertEquals('a', $collection[1]);
-        $this->assertEquals('b', $wtf[1]);
+    /** @test */
+    public function add_a_value_on_the_collection_at_tail_when_not_specifying_offset_on_php_array_set_syntax()
+    {
+        $collection = Collection::from([100, 'a', true]);
+
+        $collection[] = 'b';
+
+        $this->assertEquals(Collection::from([100, 'a', true, 'b']), $collection);
     }
 
     /** @test */

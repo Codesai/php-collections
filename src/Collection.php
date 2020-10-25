@@ -112,28 +112,20 @@ final class Collection implements ArrayAccess, \Iterator
     /**
      * @param mixed $offset
      * @param mixed $value
-     * @return Collection
      */
-    public function offsetSet($offset, $value) : Collection
+    public function offsetSet($offset, $value)
     {
-        $clone = array_merge([], $this->array);
         if (isset($offset)) {
-            $clone[$offset] = $value;
+            $this->array[$offset] = $value;
         } else {
-            $clone[] = $value;
+            $this->array[] = $value;
         }
-        return Collection::from($clone);
     }
 
-    /**
-     * @param mixed $offset
-     * @return Collection
-     */
+    /** @param mixed $offset */
     public function offsetUnset($offset)
     {
-        $clone = array_merge([], $this->array);
-        unset($clone[$offset]);
-        return Collection::from($clone);
+        unset($this->array[$offset]);
     }
 
     public function current()
