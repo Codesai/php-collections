@@ -4,13 +4,15 @@
 namespace Codesai\Collections;
 
 
+use ArrayAccess;
 use Codesai\Collections\exceptions\InfiniteCollectionValuesNotBounded;
 
-final class Collection
+final class Collection implements ArrayAccess, \Iterator
 {
     private array $array;
     /** @var callable */
     private $generator;
+    private $position = 0;
 
     /**
      * @param array|callable $param
@@ -21,21 +23,6 @@ final class Collection
         if (is_callable($param)) return static::infiniteCollection($param);
         return static::arrayCollection($param);
     }
-
-    /**
-     * @param mixed $key
-     * @return mixed
-     * @throws InfiniteCollectionValuesNotBounded
-     */
-    public function __invoke($key)
-    {
-        if ($this->generator) {
-            if (gettype($key) != 'integer') throw new \InvalidArgumentException('Key argument should be a integer index');
-            return $this->take($key + 1)($key);
-        }
-        return $this->array[$key];
-    }
-
 
     private static function arrayCollection(array $array)
     {
@@ -102,5 +89,75 @@ final class Collection
     private function validateInfiniteStream(): void
     {
         if ($this->generator) throw new InfiniteCollectionValuesNotBounded();
+    }
+
+    /**
+     * @param mixed $offset
+     * @return bool
+     */
+    public function offsetExists($offset) : bool
+    {
+        return array_key_exists($offset, $this->array);
+    }
+
+    /**
+     * @param mixed $offset
+     * @return mixed
+     */
+    public function offsetGet($offset)
+    {
+        return $this->array[$offset];
+    }
+
+    /**
+     * @param mixed $offset
+     * @param mixed $value
+     * @return Collection
+     */
+    public function offsetSet($offset, $value) : Collection
+    {
+        $clone = array_merge([], $this->array);
+        if (isset($offset)) {
+            $clone[$offset] = $value;
+        } else {
+            $clone[] = $value;
+        }
+        return Collection::from($clone);
+    }
+
+    /**
+     * @param mixed $offset
+     * @return Collection
+     */
+    public function offsetUnset($offset)
+    {
+        $clone = array_merge([], $this->array);
+        unset($clone[$offset]);
+        return Collection::from($clone);
+    }
+
+    public function current()
+    {
+        return $this->array[$this->position];
+    }
+
+    public function next()
+    {
+        ++$this->position;
+    }
+
+    public function key()
+    {
+        return $this->position;
+    }
+
+    public function valid()
+    {
+        return isset($this->array[$this->position]);
+    }
+
+    public function rewind()
+    {
+        $this->position = 0;
     }
 }

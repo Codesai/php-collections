@@ -42,8 +42,8 @@ class InfiniteCollectionTest extends TestCase
     {
         $collection = Collection::from(fn($index) => $index + 1);
 
-        $this->assertEquals(1, $collection(0));
-        $this->assertEquals(101, $collection(100));
+        $this->assertEquals(1, $collection[0]);
+        $this->assertEquals(101, $collection[100]);
     }
 
     /** @test
@@ -57,7 +57,7 @@ class InfiniteCollectionTest extends TestCase
 
         $collection = Collection::from(fn($index) => $index + 1);
 
-        $collection($invalidKey);
+        $collection[$invalidKey];
     }
 
     public function infiniteCollectionsNotBounded()
