@@ -27,7 +27,7 @@ final class CollectionTest extends TestCase
     /** @test */
     public function prints_a_collection()
     {
-        self::assertEquals("[\n\t0 => 1,\n\t1 => 2,\n\t2 => 3\n]", strval(Collection::from([1, 2, 3])));
+        $this->assertEquals("[\n\t0 => 1,\n\t1 => 2,\n\t2 => 3\n]", strval(Collection::from([1, 2, 3])));
     }
 
     /** @test */
@@ -49,6 +49,18 @@ final class CollectionTest extends TestCase
         $collection[1] = 'b';
 
         $this->assertEquals('b', $collection[1]);
+    }
+
+    /** @test */
+    public function creates_a_copy_of_the_array_when_creating_a_collection()
+    {
+        $givenArray = [1, 2, 3];
+        $resultCollection = Collection::from($givenArray);
+
+        $givenArray[0] = 0;
+
+        $this->assertEquals(0, $givenArray[0]);
+        $this->assertEquals(1, $resultCollection[0]);
     }
 
     /** @test */
