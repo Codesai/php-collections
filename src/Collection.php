@@ -16,6 +16,16 @@ final class Collection implements ArrayAccess, \Iterator
         return new Collection($array);
     }
 
+    public static function sequence(array $array): Collection
+    {
+        return new Collection($array);
+    }
+
+    public static function dictionary(array $array): Collection
+    {
+        return new Collection($array);
+    }
+
     public function __construct(array $array)
     {
         $this->array = $array;
@@ -41,7 +51,7 @@ final class Collection implements ArrayAccess, \Iterator
         return array_values($this->array);
     }
 
-    public function toDictionary()
+    public function toDictionary() : array
     {
         return $this->array;
     }
@@ -125,5 +135,10 @@ final class Collection implements ArrayAccess, \Iterator
         $clone = array_merge([], $this->array);
         $clone[$key] = $value;
         return Collection::from($clone);
+    }
+
+    public function first()
+    {
+        return array_values($this->array)[0];
     }
 }
