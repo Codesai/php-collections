@@ -47,4 +47,12 @@ final class InfiniteCollection implements \ArrayAccess
     public function offsetUnset($offset)
     {
     }
+
+    /**
+     * @return mixed
+     */
+    public function first()
+    {
+        return $this->take(1)[0];
+    }
 }
