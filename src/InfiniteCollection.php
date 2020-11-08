@@ -24,9 +24,10 @@ final class InfiniteCollection implements \ArrayAccess
 
     public function __toString()
     {
+        $array = $this->take(11)->toDictionary();
         $parseToKeyAndValue = fn($value, $index) => "\t$index => $value";
-        $splitKeysAndValues = implode(",\n", array_map($parseToKeyAndValue, $this->array, array_keys($this->array)));
-        return "[\n$splitKeysAndValues\n]";
+        $splitKeysAndValues = implode(",\n", array_map($parseToKeyAndValue, $array, array_keys($array)));
+        return "[\n$splitKeysAndValues,\n\t...\n]";
     }
 
     public function offsetExists($offset)

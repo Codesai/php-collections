@@ -10,6 +10,7 @@ use PHPUnit\Framework\TestCase;
 
 class FirstTest extends TestCase
 {
+
     /** @test */
     public function should_return_the_first_element_from_an_array_collection() {
         $collection = Collection::from([100, 'a', true]);
